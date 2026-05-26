@@ -31,7 +31,7 @@ require_once __DIR__ . '/../includes/header.php';
         <img src="<?= e(BASE_URL . '/uploads/' . $article['image']) ?>" class="img-fluid rounded article-detail-image mb-4 w-100" alt="<?= e($article['title']) ?>">
     <?php endif; ?>
 
-    <div class="article-content bg-white rounded shadow-sm p-4">
+    <div class="article-content rounded shadow-sm p-4">
         <?= nl2br(e($article['content'])) ?>
     </div>
 </article>
