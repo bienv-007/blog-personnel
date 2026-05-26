@@ -1,0 +1,32 @@
+body {
+    background-color: #f6f7fb;
+}
+
+main.container {
+    min-height: 70vh;
+}
+
+.article-image {
+    height: 210px;
+    object-fit: cover;
+}
+
+.article-detail-image {
+    max-height: 430px;
+    object-fit: cover;
+}
+
+.search-form {
+    width: 100%;
+    max-width: 480px;
+}
+
+.admin-table-image {
+    width: 72px;
+    height: 48px;
+    object-fit: cover;
+}
+
+.form-card {
+    max-width: 760px;
+}
