@@ -1,10 +1,7 @@
 <?php
 $pageTitle = 'Ajouter un article';
-require_once __DIR__ . '/../config/config.php';
-require_once __DIR__ . '/../classes/Auth.php';
+require_once __DIR__ . '/../includes/admin-header.php';
 require_once __DIR__ . '/../classes/Article.php';
-
-Auth::requireLogin();
 
 $articleModel = new Article();
 $errors = [];
@@ -39,11 +36,6 @@ function uploadArticleImage(array $file, array &$errors): ?string
     $fileName = uniqid('article_', true) . '.' . $allowedTypes[$mimeType];
     $destination = UPLOAD_DIR . $fileName;
 
-    if (!is_dir(UPLOAD_DIR) && !mkdir(UPLOAD_DIR, 0775, true)) {
-        $errors[] = 'Impossible de préparer le dossier des images.';
-        return null;
-    }
-
     if (!move_uploaded_file($file['tmp_name'], $destination)) {
         $errors[] = 'Impossible d\'enregistrer l\'image.';
         return null;
@@ -56,6 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $title = trim($_POST['title'] ?? '');
     $content = trim($_POST['content'] ?? '');
     $isPublished = isset($_POST['is_published']) ? 1 : 0;
+    $image = uploadArticleImage($_FILES['image'] ?? ['error' => UPLOAD_ERR_NO_FILE], $errors);
 
     if ($title === '') {
         $errors[] = 'Le titre est obligatoire.';
@@ -66,10 +59,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if (empty($errors)) {
-        $image = uploadArticleImage($_FILES['image'] ?? ['error' => UPLOAD_ERR_NO_FILE], $errors);
-    }
-
-    if (empty($errors)) {
         $articleModel->create([
             'title' => $title,
             'content' => $content,
@@ -77,12 +66,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'is_published' => $isPublished,
         ]);
 
-        header('Location: ' . BASE_URL . '/admin/articles.php?success=' . urlencode('Article ajouté avec succès.'));
+        header('Location:' . BASE_URL . '/admin/articles.php?success=' . urlencode('Article ajouté avec succès.'));
         exit;
     }
 }
-
-require_once __DIR__ . '/../includes/admin-header.php';
 ?>
 
 <section class="py-4">
