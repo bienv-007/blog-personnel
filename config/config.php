@@ -3,10 +3,10 @@ declare(strict_types=1);
 
 session_start();
 
-define('DB_HOST', 'sql309.infinityfree.com');
+define('DB_HOST', 'localhost');
 define('DB_NAME', 'db_blog_personnel');
-define('DB_USER', 'if0_42040014');
-define('DB_PASS', 'oQVp2MHsbeUSVd');
+define('DB_USER', 'root');
+define('DB_PASS', '');
 
 // Adaptez cette valeur si le dossier du projet change dans htdocs.
 define('BASE_URL', '/blog_personnel');
