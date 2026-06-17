@@ -1,11 +1,16 @@
 <?php
-$pageTitle = 'Gestion des articles';
-require_once __DIR__ . '/../includes/admin-header.php';
+require_once __DIR__ . '/../config/config.php';
+require_once __DIR__ . '/../classes/Auth.php';
 require_once __DIR__ . '/../classes/Article.php';
+
+Auth::requireLogin();
 
 $articleModel = new Article();
 $articles = $articleModel->getAll();
 $success = $_GET['success'] ?? '';
+
+$pageTitle = 'Gestion des articles';
+require_once __DIR__ . '/../includes/header.php';
 ?>
 
 <section class="py-4">

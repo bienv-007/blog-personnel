@@ -32,3 +32,37 @@ function formatDate(string $date): string
 {
     return date('d/m/Y à H:i', strtotime($date));
 }
+
+function uploadImage(array $file, array &$errors): ?string
+{
+    if ($file['error'] === UPLOAD_ERR_NO_FILE) {
+        return null;
+    }
+
+    if ($file['error'] !== UPLOAD_ERR_OK) {
+        $errors[] = 'Erreur pendant l\'upload de l\'image.';
+        return null;
+    }
+
+    $allowedTypes = ['image/jpeg' => 'jpg', 'image/png' => 'png', 'image/webp' => 'webp'];
+    $mimeType = mime_content_type($file['tmp_name']);
+
+    if (!isset($allowedTypes[$mimeType])) {
+        $errors[] = 'Format image autorisé: JPG, PNG ou WEBP.';
+        return null;
+    }
+
+    if ($file['size'] > 2 * 1024 * 1024) {
+        $errors[] = 'L\'image ne doit pas dépasser 2 Mo.';
+        return null;
+    }
+
+    $fileName = uniqid('article_', true) . '.' . $allowedTypes[$mimeType];
+
+    if (!move_uploaded_file($file['tmp_name'], UPLOAD_DIR . $fileName)) {
+        $errors[] = 'Impossible d\'enregistrer l\'image.';
+        return null;
+    }
+
+    return $fileName;
+}

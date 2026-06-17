@@ -1,11 +1,16 @@
 <?php
-$pageTitle = 'Tableau de bord';
-require_once __DIR__ . '/../includes/admin-header.php';
+require_once __DIR__ . '/../config/config.php';
+require_once __DIR__ . '/../classes/Auth.php';
 require_once __DIR__ . '/../classes/Article.php';
+
+Auth::requireLogin();
 
 $articleModel = new Article();
 $articles = $articleModel->getAll();
-$publishedCount = count(array_filter($articles, fn(array $article): bool => (int)$article['is_published'] === 1));
+$publishedCount = count(array_filter($articles, fn(array $a): bool => (int)$a['is_published'] === 1));
+
+$pageTitle = 'Tableau de bord';
+require_once __DIR__ . '/../includes/header.php';
 ?>
 
 <section class="py-4">
